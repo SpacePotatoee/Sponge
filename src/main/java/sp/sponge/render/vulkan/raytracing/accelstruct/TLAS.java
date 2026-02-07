@@ -3,11 +3,11 @@ package sp.sponge.render.vulkan.raytracing.accelstruct;
 import org.joml.Matrix4x3f;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
-import org.lwjgl.util.vma.Vma;
 import org.lwjgl.vulkan.*;
 import sp.sponge.render.vulkan.VulkanCtx;
 import sp.sponge.render.vulkan.VulkanUtils;
-import sp.sponge.render.vulkan.buffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBufferImpl;
 import sp.sponge.render.vulkan.device.Queue;
 import sp.sponge.render.vulkan.device.command.CommandBuffer;
 import sp.sponge.render.vulkan.device.command.CommandPool;
@@ -50,10 +50,9 @@ public class TLAS {
             //Transfer that BLASes data into a VkBuffer
             ByteBuffer instanceDataBB = MemoryUtil.memByteBuffer(blasInstances);
             int size = instanceDataBB.remaining();
-            VkBuffer instanceDataVkB = new VkBuffer(ctx, size,
+            VkBufferImpl instanceDataVkB = new VkBufferImpl(ctx, size,
                     VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-                    Vma.VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE,
-                    Vma.VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT, VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+                    VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
 
             VulkanUtils.copyByteBufferToVkBuffer(ctx, instanceDataBB, 0, instanceDataVkB, 0, size);
 
@@ -111,9 +110,8 @@ public class TLAS {
 
 
             //Create the actual AS
-            this.tlasBuffer = new VkBuffer(ctx, buildSizes.accelerationStructureSize(),
-                    VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-                    Vma.VMA_MEMORY_USAGE_AUTO, Vma.VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT, 0);
+            this.tlasBuffer = new VkBufferImpl(ctx, buildSizes.accelerationStructureSize(),
+                    VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT, 0);
 
             VkAccelerationStructureCreateInfoKHR asCreateInfo = VkAccelerationStructureCreateInfoKHR.calloc(stack)
                     .sType$Default()
@@ -133,9 +131,8 @@ public class TLAS {
             //======================================================================================================//
             //======================================================================================================//
             //Now Build the AS
-            VkBuffer tempBuffer = new VkBuffer(ctx, buildSizes.buildScratchSize(),
-                    VK10.VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-                    Vma.VMA_MEMORY_USAGE_AUTO, Vma.VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT, 0);
+            VkBufferImpl tempBuffer = new VkBufferImpl(ctx, buildSizes.buildScratchSize(),
+                    VK10.VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT, 0);
 
             geometryInfoKHR
                     .srcAccelerationStructure(VK10.VK_NULL_HANDLE)

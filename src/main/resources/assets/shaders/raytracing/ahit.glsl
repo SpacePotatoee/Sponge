@@ -4,6 +4,7 @@
 #extension GL_EXT_scalar_block_layout : enable
 #extension GL_EXT_shader_explicit_arithmetic_types_int64 : require
 #extension GL_EXT_buffer_reference2 : require
+#extension GL_EXT_ray_tracing_position_fetch : require
 
 //8 floats. 3 verts
 const int STRIDE = (8 * 3);
@@ -43,24 +44,15 @@ layout(buffer_reference, scalar) buffer Vertices {
 layout(location = 0) rayPayloadInEXT Ray ray;
 hitAttributeEXT vec2 baryCoords;
 
-vec3 getNormal(vec3 bary) {
-    int offset = STRIDE * gl_PrimitiveID;
-    Vertices vertices = Vertices(cameraInfo.vertAddress);
-
-    offset += 4;
-    vec3 normal1 = vec3(vertices.f[offset], vertices.f[offset + 1], vertices.f[offset + 2]);
-    offset += 8;
-    vec3 normal2 = vec3(vertices.f[offset], vertices.f[offset + 1], vertices.f[offset + 2]);
-    offset += 8;
-    vec3 normal3 = vec3(vertices.f[offset], vertices.f[offset + 1], vertices.f[offset + 2]);
-
-    return vec3(normal1 * bary.z + normal2 * bary.x + normal3 * bary.y);
-}
-
 void main() {
     vec3 bary = vec3(baryCoords , 1.0 - baryCoords.x - baryCoords.y);
     ray.hit = true;
-    ray.hitNormal = getNormal(bary);
+
+    vec3 pos1 = gl_HitTriangleVertexPositionsEXT[0];
+    vec3 pos2 = gl_HitTriangleVertexPositionsEXT[1];
+    vec3 pos3 = gl_HitTriangleVertexPositionsEXT[2];
+
+    ray.hitNormal = normalize(cross(pos2 - pos1, pos3 - pos1));
     ray.hitValue = vec3(0.0, 0.0, 0.0);
     ray.rayPos = ray.rayOrigin + ray.rayDir * gl_HitTEXT;
 }

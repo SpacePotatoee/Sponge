@@ -184,7 +184,7 @@ void main() {
         }
 
         light /= numOfBounces;
-        light = mix(light, texture(prevImage, vec2(texCoord.x, texCoord.y)).rgb, 0.97);
+        light = mix(light, texture(prevImage, vec2(texCoord.x, texCoord.y)).rgb, cameraInfo.time == 0 ? 0.0 : 0.97);
 
     } else {
         if (ray.hitMaterial.emissiveColor.a > 0) {

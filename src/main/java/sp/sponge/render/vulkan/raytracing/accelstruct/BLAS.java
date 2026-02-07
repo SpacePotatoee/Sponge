@@ -7,7 +7,8 @@ import org.lwjgl.vulkan.*;
 import sp.sponge.render.vulkan.VulkanCtx;
 import sp.sponge.render.vulkan.VulkanUtils;
 import sp.sponge.render.vulkan.buffer.MeshBuffers;
-import sp.sponge.render.vulkan.buffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBufferImpl;
 import sp.sponge.render.vulkan.device.Queue;
 import sp.sponge.render.vulkan.device.command.CommandBuffer;
 import sp.sponge.render.vulkan.device.command.CommandPool;
@@ -74,9 +75,8 @@ public class BLAS {
 
 
             //Create the buffer that will hold the Acceleration Structure
-            blasBuffer = new VkBuffer(ctx, buildSizes.accelerationStructureSize(),
-                    VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-                    Vma.VMA_MEMORY_USAGE_AUTO, Vma.VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT, 0);
+            blasBuffer = new VkBufferImpl(ctx, buildSizes.accelerationStructureSize(),
+                    VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT, 0);
 
 
             //Create the acceleration structure
@@ -95,9 +95,8 @@ public class BLAS {
 
 
             //Now build the Acceleration structure
-            VkBuffer tempBuffer = new VkBuffer(ctx, buildSizes.buildScratchSize(),
-                    VK10.VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-                    Vma.VMA_MEMORY_USAGE_AUTO, Vma.VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT, 0);
+            VkBufferImpl tempBuffer = new VkBufferImpl(ctx, buildSizes.buildScratchSize(),
+                    VK10.VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT, 0);
 
             VkAccelerationStructureBuildGeometryInfoKHR.Buffer buildGeometryInfoKHR = VkAccelerationStructureBuildGeometryInfoKHR.calloc(1, stack)
                     .sType$Default()
@@ -140,10 +139,9 @@ public class BLAS {
     }
 
     private VkBuffer createTransformBuffer(VulkanCtx ctx) {
-        VkBuffer transformBuffer = new VkBuffer(ctx, Float.BYTES * 12,
+        VkBufferImpl transformBuffer = new VkBufferImpl(ctx, Float.BYTES * 12,
                 VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR,
-                Vma.VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE,
-                Vma.VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT, VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+                VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
         //No transforms
         Matrix4x3f matrix = new Matrix4x3f().identity();
         ByteBuffer byteBuffer = transformBuffer.map(ctx);

@@ -7,6 +7,8 @@ import org.lwjgl.vulkan.VK13;
 import org.lwjgl.vulkan.VkBufferCopy;
 import sp.sponge.render.vulkan.VulkanCtx;
 import sp.sponge.render.vulkan.VulkanUtils;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBufferImpl;
 import sp.sponge.render.vulkan.device.command.CommandBuffer;
 
 import java.nio.ByteBuffer;
@@ -42,17 +44,13 @@ public class BufferSet {
     }
 
     private BufferPair createBufferPair(VulkanCtx ctx, int usage) {
-        VkBuffer cpuBuffer = new VkBuffer(ctx, SIZE,
+        VkBufferImpl cpuBuffer = new VkBufferImpl(ctx, SIZE,
                 VK10.VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-                Vma.VMA_MEMORY_USAGE_AUTO,
-                Vma.VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT,
                 VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK10.VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
         );
 
-        VkBuffer gpuBuffer = new VkBuffer(ctx, SIZE,
+        VkBufferImpl gpuBuffer = new VkBufferImpl(ctx, SIZE,
                 VK10.VK_BUFFER_USAGE_TRANSFER_DST_BIT | usage | VK10.VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK13.VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT,
-                Vma.VMA_MEMORY_USAGE_AUTO,
-                Vma.VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT,
                 VK10.VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
         );
 

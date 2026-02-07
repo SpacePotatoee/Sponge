@@ -7,7 +7,8 @@ import org.lwjgl.vulkan.VK13;
 import org.lwjgl.vulkan.VkBufferImageCopy;
 import sp.sponge.render.vulkan.VulkanCtx;
 import sp.sponge.render.vulkan.VulkanUtils;
-import sp.sponge.render.vulkan.buffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBufferImpl;
 import sp.sponge.render.vulkan.device.command.CommandBuffer;
 import sp.sponge.render.vulkan.image.Image;
 import sp.sponge.render.vulkan.image.ImageView;
@@ -45,8 +46,7 @@ public class Texture {
     }
 
     private void createBuffer(VulkanCtx ctx, ByteBuffer data) {
-        this.buffer = new VkBuffer(ctx, data.remaining(), VK10.VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-                Vma.VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE, Vma.VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT,
+        this.buffer = new VkBufferImpl(ctx, data.remaining(), VK10.VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
                 VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK10.VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
         ByteBuffer dstBuffer = this.buffer.map(ctx);
         dstBuffer.put(data);

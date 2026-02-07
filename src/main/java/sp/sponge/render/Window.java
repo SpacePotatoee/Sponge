@@ -1,15 +1,21 @@
 package sp.sponge.render;
 
-import org.lwjgl.glfw.GLFWVulkan;
+import imgui.ImGui;
+import imgui.flag.ImGuiConfigFlags;
+import imgui.gl3.ImGuiImplGl3;
+import imgui.glfw.ImGuiImplGlfw;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL45;
 import sp.sponge.input.Input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Window implements AutoCloseable {
     private static Window INSTANCE;
+
+    private final ImGuiImplGlfw implGlfw;
+    private final ImGuiImplGl3 implGl3;
     private long handle;
     private int width;
     private int height;
@@ -27,6 +33,8 @@ public class Window implements AutoCloseable {
         if (!glfwInit()) {
             throw new RuntimeException("Failed to initialize GLFW");
         }
+        this.implGlfw = new ImGuiImplGlfw();
+        this.implGl3 = new ImGuiImplGl3();
 
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -49,6 +57,10 @@ public class Window implements AutoCloseable {
         this.input = new Input(this);
 
         GL.createCapabilities();
+
+        ImGui.createContext();
+        implGlfw.init(this.handle, true);
+        implGl3.init("#version 410 core");
     }
 
     public void resize(long handle, int width, int height) {
@@ -64,6 +76,24 @@ public class Window implements AutoCloseable {
     public void pollEvents() {
         glfwSwapBuffers(this.handle);
         glfwPollEvents();
+    }
+
+    public void startImGuiFrame() {
+        implGlfw.newFrame();
+        implGl3.newFrame();
+        ImGui.newFrame();
+    }
+
+    public void endImGuiFrame() {
+        ImGui.render();
+        implGl3.renderDrawData(ImGui.getDrawData());
+
+        if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
+            final long backupCurrentContext = GLFW.glfwGetCurrentContext();
+            ImGui.updatePlatformWindows();
+            ImGui.renderPlatformWindowsDefault();
+            GLFW.glfwMakeContextCurrent(backupCurrentContext);
+        }
     }
 
     public boolean isRunning() {

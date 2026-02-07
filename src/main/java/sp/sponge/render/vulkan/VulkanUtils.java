@@ -3,7 +3,8 @@ package sp.sponge.render.vulkan;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.util.vma.Vma;
 import org.lwjgl.vulkan.*;
-import sp.sponge.render.vulkan.buffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBuffer;
+import sp.sponge.render.vulkan.buffer.vkbuffer.VkBufferImpl;
 
 import java.nio.ByteBuffer;
 import java.util.Locale;
@@ -63,12 +64,10 @@ public class VulkanUtils {
     }
 
     public static VkBuffer createCpuBuffer(VulkanCtx ctx, long size, int usage) {
-        return new VkBuffer(
+        return new VkBufferImpl(
                 ctx,
                 size,
                 usage,
-                Vma.VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE,
-                Vma.VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT,
                 VK10.VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK10.VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
         );
     }
