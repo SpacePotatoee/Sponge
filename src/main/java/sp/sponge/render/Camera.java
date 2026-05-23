@@ -22,10 +22,10 @@ public class Camera {
     public Camera() {
         this.fov = 70;
 //        this.position = new Vec3f(-50,5, -3);
-        this.position = new Vec3f(-6,7, -7);
-//        this.position = new Vec3f(0);
-        this.rotationVector = new Vec3f((float) Math.toRadians(25), (float) Math.toRadians(115), 1);
-//        this.rotationVector = new Vec3f(0, (float) Math.toRadians(90), 1);
+//        this.position = new Vec3f(-6,7, -7);
+        this.position = new Vec3f(0);
+//        this.rotationVector = new Vec3f((float) Math.toRadians(25), (float) Math.toRadians(115), 1);
+        this.rotationVector = new Vec3f(0, (float) Math.toRadians(90), 1);
     }
 
     public float getFov() {
@@ -34,7 +34,7 @@ public class Camera {
 
     public void updateCamera() {
         this.moved = false;
-        float speed = 0.1f;
+        float speed = 0.2f;
         Vec3f rotation = this.getRotationVector();
         if (Keybinds.FORWARDS.isPressed()) {
             this.moved = true;

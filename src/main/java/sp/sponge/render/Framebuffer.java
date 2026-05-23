@@ -82,7 +82,7 @@ public class Framebuffer {
 
             colorAttachment = GL45.glCreateTextures(GL_TEXTURE_2D);
             EXTMemoryObject.glTextureStorageMem2DEXT(
-                    colorAttachment, vkImage.getMipLevels(), GL11.GL_RGBA8, width, height, memory, 0);
+                    colorAttachment, vkImage.getMipLevels(), GL_RGBA16, width, height, memory, 0);
         }
 
         return new Framebuffer(colorAttachment, width, height);

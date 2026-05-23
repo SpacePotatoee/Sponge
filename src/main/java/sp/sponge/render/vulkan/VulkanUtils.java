@@ -14,7 +14,6 @@ import static org.lwjgl.vulkan.EXTDebugUtils.*;
 import static org.lwjgl.vulkan.VK10.VK_FALSE;
 
 public class VulkanUtils {
-    public static final int MAX_FRAMES_IN_FLIGHT = 1;
     private static OSType osType;
 
     public static final int MESSAGE_SEVERITY_BITMASK = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT |

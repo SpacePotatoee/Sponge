@@ -37,7 +37,11 @@ public class DescriptorSets {
         return group;
     }
 
-    public DescriptorSet getDescriptorSet(VulkanCtx ctx, String id) {
+    public Group getGroup(String id) {
+        return this.groupsList.get(id);
+    }
+
+    public DescriptorSet getDescriptorSet(String id) {
         return this.groupsList.get(id).descriptorSet;
     }
 

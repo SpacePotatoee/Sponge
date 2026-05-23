@@ -60,7 +60,7 @@ public class TLAS {
             CommandBuffer commandBuffer = new CommandBuffer(ctx, commandPool, true, true);
             commandBuffer.beginRecordingPrimary();
 
-            //Memory Barrier (Kinda like the image barrier)
+            //Memory Barrier (Kinda like the i mage barrier)
             VkMemoryBarrier2.Buffer memoryBarrier = VkMemoryBarrier2.calloc(1, stack)
                     .sType$Default()
                     .srcStageMask(VK_PIPELINE_STAGE_ACCELERATION_STRUCTURE_BUILD_BIT_KHR)

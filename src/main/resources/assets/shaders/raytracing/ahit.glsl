@@ -52,7 +52,8 @@ void main() {
     vec3 pos2 = gl_HitTriangleVertexPositionsEXT[1];
     vec3 pos3 = gl_HitTriangleVertexPositionsEXT[2];
 
-    ray.hitNormal = normalize(cross(pos2 - pos1, pos3 - pos1));
+     vec3 normal = normalize(cross(pos2 - pos1, pos3 - pos1));
+    ray.hitNormal = gl_HitKindEXT == gl_HitKindFrontFacingTriangleEXT ? normal : -normal;
     ray.hitValue = vec3(0.0, 0.0, 0.0);
     ray.rayPos = ray.rayOrigin + ray.rayDir * gl_HitTEXT;
 }

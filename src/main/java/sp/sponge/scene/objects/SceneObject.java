@@ -13,7 +13,6 @@ public abstract class SceneObject {
     protected boolean fixed;
     protected Transformation transformation;
     protected final Material material;
-    protected Vector3f color;
     private boolean dirty;
 
     public SceneObject(ObjectType<SceneObject> objectType, boolean fixed) {
@@ -24,7 +23,6 @@ public abstract class SceneObject {
         this.name = objectType.getName();
         this.fixed = fixed;
         this.transformation = transformation;
-        this.color = new Vector3f(0.5f);
         this.material = new Material();
     }
 

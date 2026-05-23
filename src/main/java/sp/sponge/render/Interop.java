@@ -36,10 +36,10 @@ public class Interop {
 
             //Image
             this.vkFramebuffer = new Attachment(
-                    ctx, width, height, VK10.VK_FORMAT_R8G8B8A8_UNORM,
+                    ctx, width, height, VK10.VK_FORMAT_R16G16B16A16_UNORM,
                     VK10.VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK10.VK_IMAGE_USAGE_STORAGE_BIT | VK10.VK_IMAGE_USAGE_TRANSFER_SRC_BIT);
             this.prevVkFramebuffer = new Attachment(
-                    ctx, width, height, VK10.VK_FORMAT_R8G8B8A8_UNORM, 
+                    ctx, width, height, VK10.VK_FORMAT_R16G16B16A16_UNORM,
                     VK10.VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK10.VK_IMAGE_USAGE_SAMPLED_BIT | VK10.VK_IMAGE_USAGE_TRANSFER_DST_BIT);
 
 

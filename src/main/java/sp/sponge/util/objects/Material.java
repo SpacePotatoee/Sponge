@@ -8,7 +8,7 @@ public class Material {
     private float emissiveStrength;
 
     public Material() {
-        this(new Vector3f(0.5f), new Vector3f(0.0f), 0.0f);
+        this(new Vector3f(1.0f), new Vector3f(0.0f), 0.0f);
     }
 
     public Material(Vector3f color, Vector3f emissiveColor, float emissiveStrength) {

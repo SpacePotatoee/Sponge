@@ -54,7 +54,8 @@ vec3 getSkyColor(in vec3 dir) {
 
 void main() {
     ray.hit = false;
-    ray.hitValue = getSkyColor(ray.rayDir);
+//    ray.hitValue = getSkyColor(ray.rayDir);
+    ray.hitValue = vec3(1.0);
     ray.hitMaterial = Material(vec4(0.0), vec4(0.0));
 //    ray.hitValue = vec3(0.0);
 }

@@ -1,6 +1,9 @@
 package sp.sponge.render.imgui;
 
 import imgui.ImGui;
+import sp.sponge.Sponge;
+import sp.sponge.render.MainRenderer;
+import sp.sponge.render.vulkan.raytracing.LightProbeManager;
 
 public class ImGuiScreen {
     private static int fpsValue = 0;
@@ -17,8 +20,22 @@ public class ImGuiScreen {
             }
             ImGui.text(fpsValue + " fps");
 
-            if (ImGui.button("Test")) {
-                System.out.println("Working");
+            boolean changed = false;
+            float[] baseSize = new float[]{LightProbeManager.BASE_SIZE};
+            if (ImGui.sliderFloat("Probes Base", baseSize, 0, 30)) {
+                LightProbeManager.BASE_SIZE = baseSize[0];
+                changed = true;
+            }
+
+            float[] ySize = new float[]{LightProbeManager.Y_SIZE};
+            if (ImGui.sliderFloat("Probes Height", ySize, 0, 30)) {
+                LightProbeManager.Y_SIZE = ySize[0];
+                changed = true;
+            }
+
+
+            if (changed) {
+                Sponge.getInstance().getMainRenderer().markDirty();
             }
 
             ImGui.end();

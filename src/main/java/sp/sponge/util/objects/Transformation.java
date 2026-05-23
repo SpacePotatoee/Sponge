@@ -10,7 +10,7 @@ public class Transformation {
     private Vector3f scale;
 
     public Transformation() {
-        this(new Vector3f(0.0f, 0.0f, -2.0f), new Quaternionf(), new Vector3f(1.0f));
+        this(new Vector3f(0.0f, 0.0f, 0.0f), new Quaternionf(), new Vector3f(1.0f));
     }
 
     public Transformation(Vector3f translation, Quaternionf rotation, Vector3f scale) {

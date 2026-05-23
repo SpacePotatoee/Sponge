@@ -96,6 +96,12 @@ public class MeshBuffers {
         return numOfTriangles;
     }
 
+    public void reset() {
+        this.numOfTriangles = 0;
+//        meshBuffers.getBuffer().clear();
+//        vertexBuffers.getBuffer().clear();
+    }
+
     public void free() {
         this.meshBuffers.free();
         this.vertexBuffers.free();
